@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-27 22:33:18 phuong>
+Time-stamp: <2017-04-27 22:39:43 phuong>
 """
 
 import os
@@ -114,4 +114,5 @@ if __name__ == '__main__':
             config_file,
             encoding='utf-8') as data_file:
         config = json.loads(data_file.read())
-    app.run(host='0.0.0.0', port=80)
+    port = int(os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=port)
