@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-27 21:50:33 phuong>
+Time-stamp: <2017-04-27 22:33:18 phuong>
 """
 
 import os
@@ -104,9 +104,14 @@ if __name__ == '__main__':
     global config
     app.debug = True
     app.secret_key = os.urandom(24)
+    config_file = "adapter_config.json"
+    if ("HEROKU" in os.environ):
+        config_file = "config/" + config_file
+    else:
+        config_file = "../adapter_config/" + config_file
     # read adapter config
     with open(
-            '../adapter_config/adapter_config.json',
+            config_file,
             encoding='utf-8') as data_file:
         config = json.loads(data_file.read())
     app.run(host='0.0.0.0', port=80)
