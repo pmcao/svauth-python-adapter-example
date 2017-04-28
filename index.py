@@ -64,6 +64,7 @@ def remote_create_new_session():
     iv = key[:16]
     encryptedUserProfile = bytes(bytearray.fromhex(encryptedUserProfile))
     res = decrypt(key, iv, encryptedUserProfile)
+    print(res)
     res = res[:-2]
     res = json.loads(res)
     fields = ["UserID", "FullName", "Email", "Authority"]
