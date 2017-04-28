@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-27 22:39:43 phuong>
+Time-stamp: <2017-04-27 22:41:08 phuong>
 """
 
 import os
@@ -20,8 +20,8 @@ def index():
     """
     Show an index page with social login buttons
     """
-    if request.remote_addr != "127.0.0.1":
-        abort(403)
+    # if request.remote_addr != "127.0.0.1":
+    #     abort(403)
     if "UserID" in request.form and len(request.form["UserID"]) == 0:
         session.clear()
     resp = make_response(render_template("index.html"))
