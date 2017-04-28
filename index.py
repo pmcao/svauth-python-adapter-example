@@ -82,12 +82,12 @@ def start():
     sid_sha256 = hashlib.sha256(
         request.cookies.get('session').encode('utf-8')).hexdigest()
     conckey = sid_sha256[:max_conckey]
-    url = '{}://{}:{}/login/{}?conckey={}&concdst={}://{}:{}?{}'.format(
+    url = '{}://{}:{}/login/{}?conckey={}&concdst={}://{}?{}'.format(
         config['AgentSettings']['scheme'],
         config['AgentSettings']['agentHostname'],
         config['AgentSettings']['port'], IDP, conckey,
         config['WebAppSettings']['scheme'],
-        config['WebAppSettings']['hostname'], config['WebAppSettings']['port'],
+        config['WebAppSettings']['hostname'], 
         config['WebAppSettings']['platform']['name'])
     session["key"] = sid_sha256[:max_conckey]
     return redirect(url)

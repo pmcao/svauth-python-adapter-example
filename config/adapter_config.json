@@ -2,7 +2,6 @@
   "WebAppSettings": {
     "hostname": "svauth-python-adapter.herokuapp.com",
     "scheme": "https",
-    "port": "80",
     "platform": {
       "name": "py"
     }
