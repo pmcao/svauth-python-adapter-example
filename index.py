@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-27 22:41:08 phuong>
+Time-stamp: <2017-04-27 22:44:39 phuong>
 """
 
 import os
@@ -26,9 +26,9 @@ def index():
         session.clear()
     resp = make_response(render_template("index.html"))
     resp.set_cookie('LandingUrl',
-                    '{}://{}:{}'.format(config['WebAppSettings']['scheme'],
-                                        config['WebAppSettings']['hostname'],
-                                        config['WebAppSettings']['port']))
+                    '{}://{}'.format(config['WebAppSettings']['scheme'],
+                                        config['WebAppSettings']['hostname']
+                                        ))
     if "UserID" not in session:
         session["UserID"] = ""
     return resp
