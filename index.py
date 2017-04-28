@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-28 10:32:57 phuong>
+Time-stamp: <2017-04-28 10:34:34 phuong>
 """
 
 import os
@@ -70,7 +70,7 @@ def remote_create_new_session():
     end = res.rfind('}')
     print(end)
     res = res[:end+1]
-    res.append('\'')
+    res = res + '\''
     print(res)
     # decode json
     res = json.loads(res)
