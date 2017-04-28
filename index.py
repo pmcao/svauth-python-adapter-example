@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-28 10:21:30 phuong>
+Time-stamp: <2017-04-28 10:29:42 phuong>
 """
 
 import os
@@ -66,8 +66,11 @@ def remote_create_new_session():
     res = decrypt(key, iv, encryptedUserProfile)
     # remove padding
     res = str(res)
+    print(res)
     end = res.rfind('}')
+    print(end)
     res = res[:end+1]
+    print(res)
     # decode json
     res = json.loads(res)
     fields = ["UserID", "FullName", "Email", "Authority"]
