@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-04-28 10:34:34 phuong>
+Time-stamp: <2017-04-28 10:57:45 phuong>
 """
 
 import os
@@ -15,6 +15,7 @@ max_conckey = 38
 IDP = "Facebook"
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET'])
 def index():
     """
@@ -27,8 +28,7 @@ def index():
     resp = make_response(render_template("index.html"))
     resp.set_cookie('LandingUrl',
                     '{}://{}'.format(config['WebAppSettings']['scheme'],
-                                        config['WebAppSettings']['hostname']
-                                        ))
+                                     config['WebAppSettings']['hostname']))
     if "UserID" not in session:
         session["UserID"] = ""
     return resp
@@ -65,13 +65,9 @@ def remote_create_new_session():
     encryptedUserProfile = bytes(bytearray.fromhex(encryptedUserProfile))
     res = decrypt(key, iv, encryptedUserProfile)
     # remove padding
-    res = str(res)
-    print(res)
+    res = res.decode('utf-8')
     end = res.rfind('}')
-    print(end)
-    res = res[:end+1]
-    res = res + '\''
-    print(res)
+    res = res[:end + 1]
     # decode json
     res = json.loads(res)
     fields = ["UserID", "FullName", "Email", "Authority"]
@@ -95,7 +91,7 @@ def start():
         config['AgentSettings']['agentHostname'],
         config['AgentSettings']['port'], IDP, conckey,
         config['WebAppSettings']['scheme'],
-        config['WebAppSettings']['hostname'], 
+        config['WebAppSettings']['hostname'],
         config['WebAppSettings']['platform']['name'])
     session["key"] = sid_sha256[:max_conckey]
     return redirect(url)
@@ -117,10 +113,9 @@ if __name__ == '__main__':
         config_file = "config/" + config_file
     else:
         config_file = "../adapter_config/" + config_file
+        # config_file = "config/" + config_file
     # read adapter config
-    with open(
-            config_file,
-            encoding='utf-8') as data_file:
+    with open(config_file, encoding='utf-8') as data_file:
         config = json.loads(data_file.read())
     port = int(os.environ.get('PORT', 80))
     app.run(host='0.0.0.0', port=port)
