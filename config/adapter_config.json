@@ -1,7 +1,7 @@
 {
   "WebAppSettings": {
-    "hostname": "svauth-python-adapter.herokuapp.com",
-    "scheme": "https",
+    "hostname": "localhost",
+    "scheme": "http",
     "platform": {
       "name": "py"
     }
@@ -9,7 +9,7 @@
 
   "AgentSettings": {
     "scheme": "https",
-    "port": "3030",
+    "port": "3000",
     "agentScope": "*",
     "agentScope_valid_values": "The agentScope can be 'local', '.foo.com' or '*'. ",
     "agentHostname": "authjs.westus.cloudapp.azure.com"
