@@ -1,6 +1,6 @@
 {
   "WebAppSettings": {
-    "hostname": "localhost",
+    "hostname": "svauth-python-adapter.herokuapp.com",
     "scheme": "http",
     "platform": {
       "name": "py"
