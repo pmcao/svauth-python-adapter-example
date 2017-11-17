@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:14:57 phuong>
+Time-stamp: <2017-11-17 07:20:51 phuong>
 """
 
 import os
@@ -9,6 +9,7 @@ import requests
 import json
 
 from flask import Flask, request, session, redirect, render_template, make_response
+from utils import init_token, validate_user, populate_session, request_userprofile, init_session
 
 CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
@@ -17,13 +18,33 @@ AUTHORIZED_USERS = ["Phuong Cao"]
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET'])
 def index():
     """
     Show an index page with social login buttons
     """
+    init_session()
     resp = make_response(render_template("index.html"))
     return resp
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    """
+    Clear session data
+    """
+    session.clear()
+    return redirect("/")
+
+
+@app.route('/start', methods=['GET'])
+def start():
+    """
+    Start the login flow by contacting the remote svauth agent
+    """
+    token = init_token()
+    return redirect(START_URL.format(token, RELYING_PARTY))
 
 
 @app.route('/SVAuth/adapters/py/RemoteCreateNewSession.py', methods=['GET'])
@@ -39,62 +60,7 @@ def remote_create_new_session():
     return redirect("/")
 
 
-@app.route('/start', methods=['GET'])
-def start():
-    """
-    Start the login flow by contacting the remote svauth agent
-    """
-    token = init_token()
-    return redirect(START_URL.format(token, RELYING_PARTY))
-
-
-@app.route('/logout', methods=['GET'])
-def logout():
-    session.clear()
-    return redirect("/")
-
-
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = os.urandom(24)
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 80)))
-
-def init_session():
-    """
-    Init an empty session
-    """
-    if "UserID" not in session:
-        session["UserID"] = ""
-
-
-def init_token():
-    """
-    Init a token key used to validate user profile returned from the public agent
-    """
-    import hashlib
-    MAX_TOKEN_LENGTH = 38
-    sid_sha256 = hashlib.sha256(
-        request.cookies.get('session').encode('utf-8')).hexdigest()
-    token = sid_sha256[:MAX_TOKEN_LENGTH]
-    session["token"] = sid_sha256[:MAX_TOKEN_LENGTH]
-    return token
-
-
-def validate_user(resp):
-    if session["FullName"] not in AUTHORIZED_USERS:
-        raise "unauthorized"
-
-    if ('token' not in resp) or \
-       (session["token"] != resp['conckey']):
-        raise "invalid token"
-
-
-def populate_session(resp):
-    fields = ["UserID", "FullName", "Email", "Authority"]
-    for field in fields:
-        session[field] = resp['userProfile'][field]
-
-
-def request_userprofile(authcode):
-    return json.loads(
-        requests.get(CHECK_AUTHCODE_URL.format(authcode), verify=False).text)
