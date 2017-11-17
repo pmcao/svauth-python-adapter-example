@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:12:11 phuong>
+Time-stamp: <2017-11-17 07:14:57 phuong>
 """
 
 import os
@@ -57,7 +57,7 @@ def logout():
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = os.urandom(24)
-    app.run(host='0.0.0.0', port=os.environ.get('PORT', 80))
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 80)))
 
 def init_session():
     """
