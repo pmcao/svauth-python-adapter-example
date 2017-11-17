@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:20:51 phuong>
+Time-stamp: <2017-11-17 07:22:19 phuong>
 """
 
 import os
@@ -9,7 +9,7 @@ import requests
 import json
 
 from flask import Flask, request, session, redirect, render_template, make_response
-from utils import init_token, validate_user, populate_session, request_userprofile, init_session
+from .utils import init_token, validate_user, populate_session, request_userprofile, init_session
 
 CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"

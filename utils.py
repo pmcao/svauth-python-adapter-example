@@ -4,7 +4,8 @@ import json
 
 from flask import Flask, request, session, redirect, render_template, make_response
 
-from server import AUTHORIZED_USERS, CHECK_AUTHCODE_URL
+from .server import AUTHORIZED_USERS, CHECK_AUTHCODE_URL
+
 
 def init_session():
     """
@@ -12,6 +13,7 @@ def init_session():
     """
     if "UserID" not in session:
         session["UserID"] = ""
+
 
 def init_token():
     """
