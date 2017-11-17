@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:27:17 phuong>
+Time-stamp: <2017-11-17 07:29:50 phuong>
 """
 
 import os
@@ -46,13 +46,13 @@ def validate_user(resp):
         raise "invalid token"
 
 
-def populate_session(resp):
+def populate_user_profile_to_session(resp):
     fields = ["UserID", "FullName", "Email", "Authority"]
     for field in fields:
         session[field] = resp['userProfile'][field]
 
 
-def request_userprofile(authcode):
+def request_user_profile_from_remote_agent(authcode):
     return json.loads(
         requests.get(CHECK_AUTHCODE_URL.format(authcode), verify=False).text)
 
@@ -95,9 +95,9 @@ def remote_create_new_session():
     Request user profile from svauth public agent
     Populate user profile to current session
     """
-    resp = request_userprofile(request.args.get("authcode"))
+    resp = request_user_profile_from_remote_agent(request.args.get("authcode"))
     validate_user(resp)
-    populate_session(resp)
+    populate_user_profile_to_session(resp)
     return redirect("/")
 
 
