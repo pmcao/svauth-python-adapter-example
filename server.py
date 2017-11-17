@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:37:27 phuong>
+Time-stamp: <2017-11-17 07:40:51 phuong>
 """
 
 import os
@@ -39,12 +39,12 @@ def init_token():
 
 
 def validate_user(resp):
-    if session["FullName"] not in AUTHORIZED_USERS:
-        raise "unauthorized"
+    if resp['userProfile']["FullName"] not in AUTHORIZED_USERS:
+        raise Exception("unauthorized")
 
-    if ('token' not in resp) or \
+    if ('conckey' not in resp) or \
        (session["token"] != resp['conckey']):
-        raise "invalid token"
+        raise Exception("invalid token")
 
 
 def populate_user_profile(resp):
