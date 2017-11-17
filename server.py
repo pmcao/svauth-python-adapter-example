@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:40:51 phuong>
+Time-stamp: <2017-11-17 07:42:59 phuong>
 """
 
 import os
@@ -12,7 +12,6 @@ from flask import Flask, request, session, redirect, render_template, make_respo
 
 CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
-RELYING_PARTY = "http://localhost?py"
 START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Facebook?conckey={}&concdst={}"
 AUTHORIZED_USERS = ["Phuong Cao"]
 
