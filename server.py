@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-17 07:42:59 phuong>
+Time-stamp: <2017-11-22 20:11:30 phuong>
 """
 
 import os
@@ -14,6 +14,14 @@ CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCod
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
 START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Facebook?conckey={}&concdst={}"
 AUTHORIZED_USERS = ["Phuong Cao"]
+
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)-8s %(name)s %(message)s',
+    datefmt='%Y-%m-%dT%H:%M:%S%z')
+logger = logging.getLogger(__name__)
 
 
 def init_session():
@@ -38,12 +46,17 @@ def init_token():
 
 
 def validate_user(resp):
-    if resp['userProfile']["FullName"] not in AUTHORIZED_USERS:
+    fullname = resp['userProfile']["FullName"]
+    logger.info("Validating {} ...".format(fullname))
+    if fullname not in AUTHORIZED_USERS:
         raise Exception("unauthorized")
 
+    logger.info("Validating conckey ...")
     if ('conckey' not in resp) or \
        (session["token"] != resp['conckey']):
         raise Exception("invalid token")
+
+    logger.info("Completed validation for {}...".format(fullname))
 
 
 def populate_user_profile(resp):
@@ -102,6 +115,7 @@ def remote_create_new_session():
 
 
 if __name__ == '__main__':
-    app.debug = True
+    host = '0.0.0.0'
+    port = int(os.environ.get('PORT', 80))
     app.secret_key = os.urandom(24)
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 80)))
+    app.run(host=host, port=port)
