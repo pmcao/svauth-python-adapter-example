@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-22 20:11:30 phuong>
+Time-stamp: <2017-11-22 20:18:44 phuong>
 """
 
 import os
@@ -19,7 +19,7 @@ import logging
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(asctime)s %(levelname)-8s %(name)s %(message)s',
+    format='%(levelname)-8s %(name)s %(message)s',
     datefmt='%Y-%m-%dT%H:%M:%S%z')
 logger = logging.getLogger(__name__)
 
