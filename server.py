@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-22 20:18:44 phuong>
+Time-stamp: <2017-11-22 20:58:59 phuong>
 """
 
 import os
@@ -15,14 +15,13 @@ RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
 START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Facebook?conckey={}&concdst={}"
 AUTHORIZED_USERS = ["Phuong Cao"]
 
-import logging
+import time
+import coloredlogs, logging
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(levelname)-8s %(name)s %(message)s',
+coloredlogs.install(
+    level='DEBUG',
+    fmt='%(asctime)s %(name)s[%(funcName)s] %(levelname)-8s %(message)s',
     datefmt='%Y-%m-%dT%H:%M:%S%z')
-logger = logging.getLogger(__name__)
-
 
 def init_session():
     """
@@ -47,16 +46,16 @@ def init_token():
 
 def validate_user(resp):
     fullname = resp['userProfile']["FullName"]
-    logger.info("Validating {} ...".format(fullname))
+    logging.info("Validating {} ...".format(fullname))
     if fullname not in AUTHORIZED_USERS:
         raise Exception("unauthorized")
 
-    logger.info("Validating conckey ...")
+    logging.info("Validating conckey ...")
     if ('conckey' not in resp) or \
        (session["token"] != resp['conckey']):
         raise Exception("invalid token")
 
-    logger.info("Completed validation for {}...".format(fullname))
+    logging.info("Completed validation for {}...".format(fullname))
 
 
 def populate_user_profile(resp):
