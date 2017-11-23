@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-22 21:06:17 phuong>
+Time-stamp: <2017-11-22 21:08:43 phuong>
 """
 
 import os
@@ -24,6 +24,7 @@ coloredlogs.install(
     logger=logger,
     level='DEBUG',
     fmt='%(name)s[%(funcName)s] %(levelname)-8s %(message)s')
+
 
 def init_session():
     """
@@ -64,6 +65,8 @@ def populate_user_profile(resp):
     fields = ["UserID", "FullName", "Email", "Authority"]
     for field in fields:
         session[field] = resp['userProfile'][field]
+    logger.debug("Full user profile information: {}".format(
+        resp['userProfile']))
 
 
 def request_user_profile(authcode):
