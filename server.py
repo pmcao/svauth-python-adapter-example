@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-11-22 21:08:43 phuong>
+Time-stamp: <2017-12-08 00:35:11 phuong>
 """
 
 import os
@@ -12,7 +12,7 @@ from flask import Flask, request, session, redirect, render_template, make_respo
 
 CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
-START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Facebook?conckey={}&concdst={}"
+START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Google?conckey={}&concdst={}"
 AUTHORIZED_USERS = ["Phuong Cao"]
 
 import time
@@ -65,8 +65,8 @@ def populate_user_profile(resp):
     fields = ["UserID", "FullName", "Email", "Authority"]
     for field in fields:
         session[field] = resp['userProfile'][field]
-    logger.debug("Full user profile information: {}".format(
-        resp['userProfile']))
+        logger.debug("Full user profile information: {}".format(
+            resp['userProfile']))
 
 
 def request_user_profile(authcode):
