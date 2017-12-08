@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 SVAuth Python Platform
-Time-stamp: <2017-12-08 00:35:11 phuong>
+Time-stamp: <2017-12-08 00:41:37 phuong>
 """
 
 import os
@@ -10,7 +10,7 @@ import json
 
 from flask import Flask, request, session, redirect, render_template, make_response
 
-CHECK_AUTHCODE_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
+PUBLIC_AGENT_URL = "https://authjs.westus.cloudapp.azure.com:3020/CheckAuthCode?authcode={}"
 RELYING_PARTY = "https://svauth-python-adapter.herokuapp.com?py"
 START_URL = "https://authjs.westus.cloudapp.azure.com:3020/login/Google?conckey={}&concdst={}"
 AUTHORIZED_USERS = ["Phuong Cao"]
@@ -69,11 +69,6 @@ def populate_user_profile(resp):
             resp['userProfile']))
 
 
-def request_user_profile(authcode):
-    return json.loads(
-        requests.get(CHECK_AUTHCODE_URL.format(authcode), verify=False).text)
-
-
 app = Flask(__name__)
 
 
@@ -112,7 +107,13 @@ def remote_create_new_session():
     Request user profile from svauth public agent
     Populate user profile to current session
     """
-    resp = request_user_profile(request.args.get("authcode"))
+    authcode = request.args.get("authcode")
+    public_agent_auth = PUBLIC_AGENT_URL.format(authcode)
+
+    # request user profile from the public agent
+    resp = json.loads(requests.get(public_agent_auth, verify=False).text)
+
+    # validate user profile
     validate_user(resp)
     populate_user_profile(resp)
     return redirect("/")
